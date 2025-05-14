@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/button_neuer_satz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Neues Kartenset erstellen" />
+
+    <View android:layout_height="16dp" android:layout_width="match_parent"/>
+
+    <Button
+        android:id="@+id/button_lernen_starten"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lernen starten" />
+
+</LinearLayout>
