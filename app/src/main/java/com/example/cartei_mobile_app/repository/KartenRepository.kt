@@ -1,8 +1,8 @@
-package com.example.cartei.repository
+package com.example.cartei_mobile_app.repository
 
 import androidx.lifecycle.LiveData
-import com.example.cartei.data.Karte
-import com.example.cartei.data.KartenDao
+import com.example.cartei_mobile_app.data.Karte
+import com.example.cartei_mobile_app.data.KartenDao
 
 class KartenRepository(private val dao: KartenDao) {
 

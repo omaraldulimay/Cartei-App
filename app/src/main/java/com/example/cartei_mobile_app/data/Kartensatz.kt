@@ -1,4 +1,4 @@
-package com.example.cartei.data
+package com.example.cartei_mobile_app.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

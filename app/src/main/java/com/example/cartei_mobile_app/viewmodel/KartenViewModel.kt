@@ -1,37 +1,45 @@
-package com.example.cartei.viewmodel
+package com.example.cartei_mobile_app.viewmodel
 
 import androidx.lifecycle.*
-import com.example.cartei.data.Karte
-import com.example.cartei.repository.KartenRepository
+import com.example.cartei_mobile_app.data.Karte
+import com.example.cartei_mobile_app.repository.KartenRepository
 import kotlinx.coroutines.launch
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import com.example.cartei_mobile_app.data.AppDatenbank
 
-class KartenViewModel(private val repository: KartenRepository) : ViewModel() {
 
-    private val _aktuellerSatzId = MutableLiveData<Int>()
 
-    val karten: LiveData<List<Karte>> = _aktuellerSatzId.switchMap { satzId ->
-        repository.kartenFürSatz(satzId)
-    }
+class KartenViewModel(application: Application) : AndroidViewModel(application) {
 
-    fun ladeKartenFürSatz(satzId: Int) {
-        _aktuellerSatzId.value = satzId
-    }
+    private val dao = AppDatenbank.getDatenbank(application).kartenDao()
+    val alleKarten: LiveData<List<Karte>> = dao.alleKartenFürSatz(0)
 
-    fun karteEinfügen(karte: Karte) {
-        viewModelScope.launch {
-            repository.karteEinfügen(karte)
+    fun karteLöschen(karte: Karte) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.karteLöschen(karte)
         }
     }
 
-    fun karteLöschen(karte: Karte) {
-        viewModelScope.launch {
-            repository.karteLöschen(karte)
+    fun alleKartenLöschen() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.alleKartenEinesSatzesLöschen(0)
         }
     }
 
     fun karteAktualisieren(karte: Karte) {
-        viewModelScope.launch {
-            repository.karteAktualisieren(karte)
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.karteAktualisieren(karte)
         }
     }
+
+
 }
+
+class KartenViewModelFactory(private val application: Application) :
+    ViewModelProvider.AndroidViewModelFactory(application)

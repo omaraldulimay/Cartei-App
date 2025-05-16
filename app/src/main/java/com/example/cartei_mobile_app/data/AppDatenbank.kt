@@ -1,11 +1,11 @@
-package com.example.cartei.data
+package com.example.cartei_mobile_app.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Karte::class, Kartensatz::class], version = 1, exportSchema = false)
+@Database(entities = [Karte::class, Kartensatz::class], version = 2, exportSchema = false)
 abstract class AppDatenbank : RoomDatabase() {
 
     abstract fun kartenDao(): KartenDao
