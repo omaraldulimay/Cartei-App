@@ -14,13 +14,17 @@ interface KartenDao {
     suspend fun karteEinfügen(karte: Karte)
 
     @Update
-     fun karteAktualisieren(karte: Karte)
+    suspend fun karteAktualisieren(karte: Karte)
 
     @Delete
     suspend fun karteLöschen(karte: Karte)
 
 
     @Query("DELETE FROM karten WHERE satzId = :satzId")
-    fun alleKartenEinesSatzesLöschen(satzId: Int)
+    suspend fun alleKartenEinesSatzesLöschen(satzId: Int)
+
+    @Query("UPDATE karten SET gelernt = 0 WHERE satzId = :satzId")
+    suspend fun gelerntZurücksetzen(satzId: Int)
+
 
 }

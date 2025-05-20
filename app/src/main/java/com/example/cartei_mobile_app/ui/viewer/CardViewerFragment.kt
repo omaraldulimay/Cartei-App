@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.Toast
 import com.example.cartei_mobile_app.data.Karte
 import android.content.Intent
+import android.util.Log
 import com.example.cartei_mobile_app.ui.create.CreateCardActivity
 import android.widget.ToggleButton
 
@@ -43,40 +44,47 @@ class CardViewerFragment : Fragment() {
 
         textKarte = view.findViewById(R.id.text_karte)
         buttonNaechste = view.findViewById(R.id.button_naechste)
+        buttonGelernt = view.findViewById(R.id.button_gelernt)
+        toggleNurUngelernt = view.findViewById(R.id.toggle_nur_ungelernt)
+        textFortschritt = view.findViewById(R.id.text_fortschritt)
 
-        val factory = KartenViewModelFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory)[KartenViewModel::class.java]
+        // ViewModel initialisieren sobald satzId empfangen wird:
+        parentFragmentManager.setFragmentResultListener("satzIdKey", viewLifecycleOwner) { _, bundle ->
+            val satzId = bundle.getInt("satzId", 0)
+            Log.d("DEBUG", "CardViewer gestartet für Satz-ID: $satzId")
 
-        viewModel.alleKarten.observe(viewLifecycleOwner) { liste ->
-            alleKartenOriginal = liste
-            filtereKartenUndZeige()
+
+            val factory = KartenViewModelFactory(requireActivity().application, satzId)
+            viewModel = ViewModelProvider(this, factory)[KartenViewModel::class.java]
+
+            viewModel.alleKarten.observe(viewLifecycleOwner) { liste ->
+                Log.d("DEBUG", "Anzahl geladener Karten: ${liste.size}")
+                alleKartenOriginal = liste
+                filtereKartenUndZeige()
+
+                Toast.makeText(requireContext(), "Karten geladen: ${liste.size}", Toast.LENGTH_SHORT).show()
+            }
         }
 
-
-        // Normaler Klick: flippen
-        textKarte.setOnClickListener {
-            zeigeAntwort = !zeigeAntwort
-            zeigeKarte()
-
-
-            buttonGelernt = view.findViewById(R.id.button_gelernt)
-            buttonGelernt.setOnClickListener {
-                val karte = kartenListe[aktuelleIndex]
+        buttonGelernt.setOnClickListener {
+            val karte = kartenListe.getOrNull(aktuelleIndex)
+            if (karte != null) {
                 val neueKarte = karte.copy(gelernt = true)
                 viewModel.karteAktualisieren(neueKarte)
                 Toast.makeText(requireContext(), "Als gelernt markiert", Toast.LENGTH_SHORT).show()
             }
-
-            toggleNurUngelernt = view.findViewById(R.id.toggle_nur_ungelernt)
-            toggleNurUngelernt.setOnCheckedChangeListener { _, isChecked ->
-                nurUngelerntAnzeigen = isChecked
-                filtereKartenUndZeige()
-            }
-
-
         }
 
-// Langer Klick: bearbeiten
+        toggleNurUngelernt.setOnCheckedChangeListener { _, isChecked ->
+            nurUngelerntAnzeigen = isChecked
+            filtereKartenUndZeige()
+        }
+
+        textKarte.setOnClickListener {
+            zeigeAntwort = !zeigeAntwort
+            zeigeKarte()
+        }
+
         textKarte.setOnLongClickListener {
             val karte = kartenListe[aktuelleIndex]
             val intent = Intent(requireContext(), CreateCardActivity::class.java).apply {
@@ -85,9 +93,8 @@ class CardViewerFragment : Fragment() {
                 putExtra("antwort", karte.antwort)
             }
             startActivity(intent)
-            true // wichtig: gibt zurück, dass der LongClick behandelt wurde
+            true
         }
-
 
         buttonNaechste.setOnClickListener {
             if (aktuelleIndex < kartenListe.size - 1) {
@@ -99,11 +106,9 @@ class CardViewerFragment : Fragment() {
             }
         }
 
-        textFortschritt = view.findViewById(R.id.text_fortschritt)
-
-
         return view
     }
+
 
     private fun zeigeKarte() {
         if (kartenListe.isNotEmpty()) {

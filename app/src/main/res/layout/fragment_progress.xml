@@ -20,4 +20,12 @@
         android:text="Alle Karten löschen"
         android:layout_marginTop="16dp" />
 
+    <Button
+        android:id="@+id/button_reset_gelernt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gelernt-Status zurücksetzen"
+        android:layout_marginTop="16dp" />
+
+
 </FrameLayout>

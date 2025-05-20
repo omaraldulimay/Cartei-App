@@ -15,13 +15,36 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val satzId = intent.getIntExtra("satzId", 0)
+        supportFragmentManager.setFragmentResult("satzIdKey", Bundle().apply {
+            putInt("satzId", satzId)
+        })
+
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        NavigationUI.setupWithNavController(bottomNavigationView, navController)
-
-
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_start -> {
+                    navController.popBackStack(R.id.nav_start, false)
+                    navController.navigate(R.id.nav_start)
+                    true
+                }
+                R.id.nav_karten -> {
+                    navController.popBackStack(R.id.nav_karten, false)
+                    navController.navigate(R.id.nav_karten)
+                    true
+                }
+                R.id.nav_fortschritt -> {
+                    navController.popBackStack(R.id.nav_fortschritt, false)
+                    navController.navigate(R.id.nav_fortschritt)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
 

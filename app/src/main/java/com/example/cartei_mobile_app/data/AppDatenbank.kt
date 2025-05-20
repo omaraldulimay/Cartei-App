@@ -9,6 +9,8 @@ import androidx.room.RoomDatabase
 abstract class AppDatenbank : RoomDatabase() {
 
     abstract fun kartenDao(): KartenDao
+    abstract fun kartensatzDao(): KartensatzDao
+
 
     companion object {
         @Volatile
