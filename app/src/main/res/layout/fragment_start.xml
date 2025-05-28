@@ -21,4 +21,14 @@
         android:layout_height="wrap_content"
         android:text="Lernen starten" />
 
+    <TextView
+        android:id="@+id/text_letzter_satz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Letztes Set: –"
+        android:padding="16dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray" />
+
+
 </LinearLayout>

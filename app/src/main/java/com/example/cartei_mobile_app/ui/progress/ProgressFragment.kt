@@ -23,22 +23,28 @@ class ProgressFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_progress, container, false)
 
-        parentFragmentManager.setFragmentResultListener("satzIdKey", viewLifecycleOwner) { _, bundle ->
-            val satzId = bundle.getInt("satzId", 0)
+        val prefs = requireContext().getSharedPreferences("cartei_prefs", 0)
+        val satzId = prefs.getInt("letzter_satz_id", -1)
 
-            val factory = KartenViewModelFactory(requireActivity().application, satzId)
-            val viewModel = ViewModelProvider(this, factory)[KartenViewModel::class.java]
+        if (satzId == -1) {
+            Toast.makeText(requireContext(), "Bitte zuerst ein Kartenset auswählen", Toast.LENGTH_SHORT).show()
+            return view
+        }
 
-            val textProgress = view.findViewById<TextView>(R.id.text_progress)
-            val loeschenButton = view.findViewById<Button>(R.id.button_karten_loeschen)
-            val resetButton = view.findViewById<Button>(R.id.button_reset_gelernt)
+        val factory = KartenViewModelFactory(requireActivity().application, satzId)
+        val viewModel = ViewModelProvider(this, factory)[KartenViewModel::class.java]
 
-            viewModel.alleKarten.observe(viewLifecycleOwner) { karten ->
-                updateProgress(karten)
-            }
+        val textProgress = view.findViewById<TextView>(R.id.text_progress) // funktion wird nicht verwendet!!
+        val loeschenButton = view.findViewById<Button>(R.id.button_karten_loeschen)
+        val resetButton = view.findViewById<Button>(R.id.button_reset_gelernt)
+
+        viewModel.alleKarten.observe(viewLifecycleOwner) { karten ->
+            updateProgress(karten)
+        }
 
 
-            loeschenButton.setOnClickListener {
+
+        loeschenButton.setOnClickListener {
                 AlertDialog.Builder(requireContext())
                     .setTitle("Karten löschen")
                     .setMessage("Möchtest du wirklich alle Karten löschen?")
@@ -69,7 +75,7 @@ class ProgressFragment : Fragment() {
             }
 
 
-        }
+
 
         return view
     }

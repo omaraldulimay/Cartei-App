@@ -14,6 +14,7 @@ import com.example.cartei_mobile_app.ui.create.CreateCardActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class StartFragment : Fragment() {
 
@@ -96,6 +97,8 @@ class StartFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
 
+                        speichereSatzId(satz.id)
+
                         if (satz.id > 0) {
                             Log.d("DEBUG", "Klick auf Kartensatz: ${satz.titel}, ID: ${satz.id}")
 
@@ -121,9 +124,47 @@ class StartFragment : Fragment() {
                     .setNegativeButton("Schließen", null)
                     .show()
             }
+
+
         }
-return view
+
+        val letzterSatzId = holeGespeichertenSatzId()
+        if (letzterSatzId > 0) {
+            val textLetzterSatz = view.findViewById<TextView>(R.id.text_letzter_satz)
+            val db = AppDatenbank.getDatenbank(requireContext())
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val satz = db.kartensatzDao().getSatzMitId(letzterSatzId)
+                if (satz != null) {
+                    withContext(Dispatchers.Main) {
+                        db.kartenDao().alleKartenFürSatz(letzterSatzId)
+                            .observe(viewLifecycleOwner) { karten ->
+                                val gelernt = karten.count { it.gelernt }
+                                val gesamt = karten.size
+                                textLetzterSatz.text =
+                                    "Letztes Set: ${satz.titel} – Fortschritt: $gelernt von $gesamt"
+                            }
+                    }
+                }
+            }
+        }
+
+
+        return view
     }
+
+     private fun speichereSatzId(satzId: Int) {
+        val prefs = requireContext().getSharedPreferences("cartei_prefs", 0)
+        prefs.edit().putInt("letzter_satz_id", satzId).apply()
+    }
+
+     private fun holeGespeichertenSatzId(): Int {
+        val prefs = requireContext().getSharedPreferences("cartei_prefs", 0)
+        return prefs.getInt("letzter_satz_id", -1)
+    }
+
+
+
 
 }
 

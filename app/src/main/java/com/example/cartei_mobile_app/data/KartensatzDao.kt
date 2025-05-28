@@ -17,5 +17,8 @@ interface KartensatzDao {
     @Delete
     fun deleteSatz(kartensatz: Kartensatz)
 
+    @Query("SELECT * FROM kartensätze WHERE id = :id LIMIT 1")
+    fun getSatzMitId(id: Int): Kartensatz?
+
 
 }
