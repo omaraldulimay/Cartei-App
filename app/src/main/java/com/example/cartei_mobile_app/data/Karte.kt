@@ -10,6 +10,6 @@ data class Karte(
     val frage: String,
     val antwort: String,
     val satzId: Int,  // Fremdschlüssel auf Kartensatz
-    val gelernt: Boolean = false
+    var gelernt: Boolean
 
 )

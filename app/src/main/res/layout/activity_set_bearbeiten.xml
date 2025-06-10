@@ -7,15 +7,24 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/text_kartenset_header"
+        android:id="@+id/text_satz_titel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wähle ein Kartenset zum Bearbeiten"
+        android:text="Kartenset bearbeiten"
         android:textSize="18sp"
         android:layout_marginBottom="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewKartensets"
+        android:id="@+id/recyclerViewKartenBearbeiten"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/button_zurueck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="← Zurück"
+        android:layout_gravity="start"
+        android:layout_marginTop="8dp" />
+
 </LinearLayout>

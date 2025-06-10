@@ -1,32 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/input_titel"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Titel des Kartensets" />
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <EditText
-        android:id="@+id/input_frage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Frage" />
+        <!-- Kartenset-Titel -->
+        <EditText
+            android:id="@+id/text_set_titel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set: ..."
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
-    <EditText
-        android:id="@+id/input_antwort"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Antwort" />
+        <!-- Eingabe: Frage -->
+        <EditText
+            android:id="@+id/edit_frage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Frage eingeben"
+            android:inputType="text"
+            android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/button_speichern"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Karte speichern" />
-</LinearLayout>
+        <!-- Eingabe: Antwort -->
+        <EditText
+            android:id="@+id/edit_antwort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Antwort eingeben"
+            android:inputType="text"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Button: Karte speichern -->
+        <Button
+            android:id="@+id/button_speichern"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Karte speichern" />
+
+        <!-- Optional: Fertig / Zurück -->
+        <Button
+            android:id="@+id/button_fertig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fertig"
+            android:layout_marginTop="12dp" />
+    </LinearLayout>
+</ScrollView>

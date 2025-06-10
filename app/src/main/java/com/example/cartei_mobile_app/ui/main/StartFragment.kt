@@ -1,5 +1,6 @@
 package com.example.cartei_mobile_app.ui.main
 
+import com.example.cartei_mobile_app.ui.main.LernActivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -104,9 +105,15 @@ class StartFragment : Fragment() {
 
                             val bundle = Bundle().apply {
                                 putInt("satzId", satz.id)
+
+                                putString("modus", "lernen") // NEU: Lernmodus explizit setzen
                             }
                             parentFragmentManager.setFragmentResult("satzIdKey", bundle)
-                            findNavController().navigate(R.id.nav_karten)
+                            val intent = Intent(requireContext(), LernActivity::class.java)
+                            intent.putExtra("satzId", satz.id)
+                            startActivity(intent)
+
+
                         } else {
                             Toast.makeText(
                                 requireContext(),

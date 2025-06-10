@@ -25,6 +25,13 @@
         </activity>
 
         <activity android:name=".ui.create.CreateCardActivity" />
+        <activity android:name=".ui.edit.SetBearbeitenActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+
+        <activity android:name=".ui.main.LernActivity" />
+        <activity android:name=".ui.edit.SetAuswahlActivity" />
+
+
 
 
     </application>

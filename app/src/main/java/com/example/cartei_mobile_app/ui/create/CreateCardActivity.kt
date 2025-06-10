@@ -6,14 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cartei_mobile_app.R
 import android.widget.EditText
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.cartei_mobile_app.data.AppDatenbank
 import com.example.cartei_mobile_app.data.Karte
-import kotlinx.coroutines.CoroutineScope
+import com.example.cartei_mobile_app.data.Kartensatz
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.example.cartei_mobile_app.data.Kartensatz
-
+import kotlinx.coroutines.withContext
 
 private var aktuellerSatzId: Int = -1
 
@@ -22,69 +23,64 @@ class CreateCardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_card)
 
-        val titelFeld = findViewById<EditText>(R.id.input_titel)
-        val frageFeld = findViewById<EditText>(R.id.input_frage)
-        val antwortFeld = findViewById<EditText>(R.id.input_antwort)
-        val speichernButton = findViewById<Button>(R.id.button_speichern)
+        val frageText = findViewById<EditText>(R.id.edit_frage)
+        val antwortText = findViewById<EditText>(R.id.edit_antwort)
+        val buttonSpeichern = findViewById<Button>(R.id.button_speichern)
+        val buttonFertig = findViewById<Button>(R.id.button_fertig)
+        val titelEdit = findViewById<EditText>(R.id.text_set_titel)
 
-        val alteFrage = intent.getStringExtra("frage") ?: ""
-        val alteAntwort = intent.getStringExtra("antwort") ?: ""
-        val alterTitel = intent.getStringExtra("titel") ?: ""
+        val übergebeneSatzId = intent.getIntExtra("satzId", -1)
+        val titel = intent.getStringExtra("titel") ?: "Unbenanntes Set"
+        titelEdit.text.toString()
 
-        frageFeld.setText(alteFrage)
-        antwortFeld.setText(alteAntwort)
-        titelFeld.setText(alterTitel)
+        if (übergebeneSatzId == -1) {
+            // Neuen Kartensatz erstellen, wenn keiner übergeben wurde
+            lifecycleScope.launch {
+                val neuerSatz = Kartensatz(titel = titel)
+                val neueSatzId = AppDatenbank.getDatenbank(this@CreateCardActivity).kartensatzDao().insert(neuerSatz).toInt()
+                aktuellerSatzId = neueSatzId
+                Log.d("CreateCard", "Neuer Kartensatz erstellt mit ID: $neueSatzId")
+            }
+        } else {
+            aktuellerSatzId = übergebeneSatzId
+        }
 
+        buttonSpeichern.setOnClickListener {
+            val frage = frageText.text.toString()
+            val antwort = antwortText.text.toString()
 
-        speichernButton.setOnClickListener {
-            val frage = frageFeld.text.toString().trim()
-            val antwort = antwortFeld.text.toString().trim()
-            val titel = titelFeld.text.toString().trim()
-
-            if (frage.isEmpty() || antwort.isEmpty() || titel.isEmpty()) {
-                Toast.makeText(this, "Alle Felder ausfüllen", Toast.LENGTH_SHORT).show()
+            if (frage.isBlank() || antwort.isBlank()) {
+                Toast.makeText(this, "Frage und Antwort dürfen nicht leer sein", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            CoroutineScope(Dispatchers.IO).launch {
-                val db = AppDatenbank.getDatenbank(applicationContext)
-                val kartensatzDao = db.kartensatzDao()
-                val kartenDao = db.kartenDao()
+            if (aktuellerSatzId == -1) {
+                Toast.makeText(this, "Kartensatz-ID nicht verfügbar", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-                // Satz-ID prüfen oder merken
-                if (aktuellerSatzId == -1) {
-                    val bestehenderSatz = kartensatzDao.getSatzMitTitel(titel)
-                    aktuellerSatzId = bestehenderSatz?.id
-                        ?: kartensatzDao.insert(Kartensatz(titel = titel)).toInt()
-                    runOnUiThread {
-                        Toast.makeText(this@CreateCardActivity, "Satz-ID: $aktuellerSatzId", Toast.LENGTH_SHORT).show()
-                    }
+            val karte = Karte(frage = frage, antwort = antwort, satzId = aktuellerSatzId, gelernt = false)
 
-                }
+            lifecycleScope.launch {
+                AppDatenbank.getDatenbank(this@CreateCardActivity).kartenDao().karteEinfügen(karte)
 
-                val neueKarte = Karte(
-                    frage = frage,
-                    antwort = antwort,
-                    satzId = aktuellerSatzId
-                )
-
-                kartenDao.karteEinfügen(neueKarte)
-
-                runOnUiThread {
-                    frageFeld.setText("")
-                    antwortFeld.setText("")
-                    Toast.makeText(this@CreateCardActivity, "Karte gespeichert", Toast.LENGTH_SHORT)
-                        .show()
-
-
+                withContext(Dispatchers.Main) {
+                    frageText.text.clear()
+                    antwortText.text.clear()
+                    frageText.requestFocus()
+                    Toast.makeText(this@CreateCardActivity, "Karte gespeichert", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+
+        buttonFertig.setOnClickListener {
+            if (aktuellerSatzId == -1) {
+                Toast.makeText(this, "Kartensatz konnte nicht gespeichert werden", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            Toast.makeText(this, "Kartensatz gespeichert", Toast.LENGTH_SHORT).show()
+            finish()
+        }
     }
 }
-
-
-
-
-
-

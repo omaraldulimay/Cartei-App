@@ -1,13 +1,16 @@
 package com.example.cartei_mobile_app
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cartei_mobile_app.R
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.fragment.NavHostFragment
-
+import com.example.cartei_mobile_app.ui.edit.SetAuswahlActivity
+import com.example.cartei_mobile_app.ui.edit.SetBearbeitenActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,10 +36,14 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_karten -> {
-                    navController.popBackStack(R.id.nav_karten, false)
-                    navController.navigate(R.id.nav_karten)
+                    Toast.makeText(this, "Karten geklickt", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this, SetAuswahlActivity::class.java)
+                    startActivity(intent)
+
                     true
                 }
+
                 R.id.nav_fortschritt -> {
                     navController.popBackStack(R.id.nav_fortschritt, false)
                     navController.navigate(R.id.nav_fortschritt)

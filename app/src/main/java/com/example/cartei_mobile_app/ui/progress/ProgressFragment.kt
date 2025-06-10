@@ -14,6 +14,9 @@ import com.example.cartei_mobile_app.R
 import com.example.cartei_mobile_app.data.Karte
 import com.example.cartei_mobile_app.viewmodel.KartenViewModel
 import com.example.cartei_mobile_app.viewmodel.KartenViewModelFactory
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
 
 class ProgressFragment : Fragment() {
 
@@ -38,8 +41,15 @@ class ProgressFragment : Fragment() {
         val loeschenButton = view.findViewById<Button>(R.id.button_karten_loeschen)
         val resetButton = view.findViewById<Button>(R.id.button_reset_gelernt)
 
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewKarten)
+        val adapter = KartenAdapter(emptyList()) // Adapter kommt gleich
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
+
         viewModel.alleKarten.observe(viewLifecycleOwner) { karten ->
+            adapter.updateListe(karten)
             updateProgress(karten)
+
         }
 
 

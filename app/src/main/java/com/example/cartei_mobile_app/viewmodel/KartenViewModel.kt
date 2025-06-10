@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.cartei_mobile_app.data.AppDatenbank
+import com.example.cartei_mobile_app.data.KartenDao
 
 
 
@@ -38,6 +39,18 @@ class KartenViewModel(application: Application, private val satzId: Int) : Andro
             dao.gelerntZurücksetzen(satzId)
         }
     }
+    fun karteLöschen(karte: Karte) {
+        viewModelScope.launch {
+            dao.karteLöschen(karte)
+        }
+    }
+
+    fun karteEinfügen(karte: Karte) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.karteEinfügen(karte)
+        }
+    }
+
 
 
 }

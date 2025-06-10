@@ -9,10 +9,6 @@
         android:name="com.example.cartei_mobile_app.ui.main.StartFragment"
         android:label="Start" />
 
-    <fragment
-        android:id="@+id/nav_karten"
-        android:name="com.example.cartei_mobile_app.ui.viewer.CardViewerFragment"
-        android:label="Karten" />
 
     <fragment
         android:id="@+id/nav_fortschritt"

@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/fortschrittText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fortschritt"
+        android:textSize="16sp"
+        android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/karteText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:padding="24dp"
+        android:background="@drawable/card_background"
+        android:text="Frage..." />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="24dp">
+
+        <Button
+            android:id="@+id/button_gelernt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✅ GELERNT"
+            android:layout_marginEnd="16dp" />
+
+        <Button
+            android:id="@+id/button_naechste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⏭ NÄCHSTE" />
+    </LinearLayout>
+</LinearLayout>
