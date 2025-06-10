@@ -50,6 +50,7 @@ class SetBearbeitenActivity : AppCompatActivity() {
                 intent.putExtra("frage", karte.frage)
                 intent.putExtra("antwort", karte.antwort)
                 intent.putExtra("titel", "Dein Titel hier") // Optional – Titel falls du ihn hast
+                intent.putExtra("satzId", karte.satzId)
                 startActivity(intent)
             }
         )

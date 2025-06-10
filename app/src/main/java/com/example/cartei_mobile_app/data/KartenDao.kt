@@ -14,6 +14,9 @@ interface KartenDao {
     suspend fun karteEinfügen(karte: Karte)
 
     @Update
+    suspend fun update(karte: Karte)
+
+    @Update
     suspend fun karteAktualisieren(karte: Karte)
 
     @Delete

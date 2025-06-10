@@ -25,6 +25,7 @@ class KartensetAdapter(
         val set = sets[position]
         holder.titelText.text = set.titel
         holder.itemView.setOnClickListener { onClick(set) }
+
     }
 
     override fun getItemCount() = sets.size

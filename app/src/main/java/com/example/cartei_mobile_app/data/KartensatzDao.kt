@@ -22,6 +22,9 @@ interface KartensatzDao {
     @Query("SELECT * FROM kartensätze WHERE id = :id LIMIT 1")
     fun getSatzMitId(id: Int): Kartensatz?
 
+    @Update
+    suspend fun update(kartensatz: Kartensatz)
+
 
 
 

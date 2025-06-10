@@ -11,13 +11,13 @@
 
         <!-- Kartenset-Titel -->
         <EditText
-            android:id="@+id/text_set_titel"
-            android:layout_width="wrap_content"
+            android:id="@+id/edit_set_titel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Set: ..."
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:hint="Set-Titel eingeben"
+            android:inputType="text"
+            android:text="Unbenanntes Set" />
+
 
         <!-- Eingabe: Frage -->
         <EditText
