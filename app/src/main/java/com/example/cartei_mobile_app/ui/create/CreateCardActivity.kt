@@ -23,6 +23,10 @@ class CreateCardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_card)
 
+        // AppBar-Zurückpfeil aktivieren & Titel setzen
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Kartenset erstellen"
+
         val frageText = findViewById<EditText>(R.id.edit_frage)
         val antwortText = findViewById<EditText>(R.id.edit_antwort)
         val buttonSpeichern = findViewById<Button>(R.id.button_speichern)
@@ -144,4 +148,11 @@ class CreateCardActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
+
 }
