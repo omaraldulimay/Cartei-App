@@ -22,6 +22,33 @@
 
 ### Schritte zur Ausführung
 
- Projekt von GitHub klonen:
+1. Projekt von GitHub klonen:
    ```bash
    git clone https://github.com/omaraldulimay/Cartei-App.git
+
+2. In Android Studio öffnen:
+
+Menü: File → Open → Projektverzeichnis auswählen
+
+3. Projekt synchronisieren lassen (Gradle-Sync)
+
+4. Emulator starten oder Gerät per USB verbinden
+
+5. App starten mit:
+
+Run ▶️ oder Tastenkürzel Shift + F10
+
+❗ Tipps bei Startproblemen
+Stelle sicher, dass Android SDK (API 33+) installiert ist:
+→ Tools > SDK Manager > Android 13 (Tiramisu) aktivieren
+
+Falls Build-Fehler auftreten:
+→ Build > Clean Project, dann Build > Rebuild Project
+
+Gradle-Version ggf. aktualisieren lassen (Popup in Android Studio folgen)
+
+Kein Internet nötig – die App speichert lokal (offline-fähig)
+
+
+
+
